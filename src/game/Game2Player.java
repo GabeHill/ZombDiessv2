@@ -10,9 +10,7 @@ import objects.Cup;
 import objects.Player;
 import objects.ZombDie;
 
-//this class was used to test situations and fix things wile keeping the original class intact in case this
-//made it worse. the code of this class was then copied to the main Game class for use.
-public class GameDEBUG {
+public class Game2Player {
 	private static Cup c;
 	private static String[] storage;
 	private static ArrayList<Player> players;
@@ -22,7 +20,7 @@ public class GameDEBUG {
 
 	private static void finalScore() {
 
-		Collections.sort(players, new SortByPoints2());
+		Collections.sort(players, new SortByPointsDEBUG());
 
 		System.out.println(players.get(players.size() - 1).getName() + " wins with "
 				+ players.get(players.size() - 1).getPoints() + " brains.");
@@ -68,9 +66,8 @@ public class GameDEBUG {
 		storage = new String[3];
 		for (int i = 0; i < storage.length; i++) {
 			storage[i] = z.get(i).getRoll();
-		}
-		for (String s : storage) {
-			System.out.print(s + ", ");
+
+			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
 		}
 		System.out.println();
 		if (isShot()) {
@@ -178,9 +175,8 @@ public class GameDEBUG {
 		brain = new ArrayList<ZombDie>();
 		storage = new String[3];
 
-		int num = ConsoleIO.promptForInt("How many players? Min 2, Max 4:", 2, 4);
 		String temp;
-		for (int i = 0; i < num; i++) {
+		for (int i = 0; i < 2; i++) {
 			players.add(new Player());
 			temp = ConsoleIO.promptForInput("Enter player " + (i + 1) + "'s name:", true).trim();
 			if ((temp == null) || temp.equals("")) {
@@ -264,7 +260,7 @@ public class GameDEBUG {
 	}
 }
 
-class SortByPointsDEBUG implements Comparator<Player> {
+class SortByPoints2 implements Comparator<Player> {
 	@Override
 	public int compare(Player a, Player b) {
 		return a.getPoints() - b.getPoints();
