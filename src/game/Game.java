@@ -66,9 +66,7 @@ public class Game {
 		storage = new String[3];
 		for (int i = 0; i < storage.length; i++) {
 			storage[i] = z.get(i).getRoll();
-		}
-		for (String s : storage) {
-			System.out.print(s + ", ");
+			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
 		}
 		System.out.println();
 		if (isShot()) {
@@ -88,11 +86,11 @@ public class Game {
 			z.add(0, c.draw());
 			z.add(0, c.draw());
 		}
+		storage = new String[3];
+
 		for (int i = 0; i < storage.length; i++) {
 			storage[i] = z.get(i).getRoll();
-		}
-		for (String s : storage) {
-			System.out.print(s + ", ");
+			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
 		}
 		System.out.println();
 		if (isShot()) {

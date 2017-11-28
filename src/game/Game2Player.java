@@ -87,6 +87,8 @@ public class Game2Player {
 			z.add(0, c.draw());
 			z.add(0, c.draw());
 		}
+		storage = new String[3];
+
 		for (int i = 0; i < storage.length; i++) {
 			storage[i] = z.get(i).getRoll();
 			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
