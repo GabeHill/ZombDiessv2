@@ -54,6 +54,7 @@ public class Game2Player {
 	}
 
 	private static void printReRes() {
+		System.out.println(store.size());
 		z.add(0, c.draw());
 		z.add(0, c.draw());
 		z.add(0, c.draw());
@@ -66,7 +67,6 @@ public class Game2Player {
 		storage = new String[3];
 		for (int i = 0; i < storage.length; i++) {
 			storage[i] = z.get(i).getRoll();
-
 			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
 		}
 		System.out.println();
@@ -89,9 +89,7 @@ public class Game2Player {
 		}
 		for (int i = 0; i < storage.length; i++) {
 			storage[i] = z.get(i).getRoll();
-		}
-		for (String s : storage) {
-			System.out.print(s + ", ");
+			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
 		}
 		System.out.println();
 		if (isShot()) {
