@@ -16,14 +16,13 @@ public class Game2Player {
 	private static ArrayList<Player> players;
 	private static boolean fail = false, done = false;
 	private static ArrayList<ZombDie> z, footprint, brain, store;
-	private static int l = 0, brains = 0;
+	private static int l = 0, brains = 0, first = -1;
 
 	private static void finalScore() {
 
-		Collections.sort(players, new SortByPointsDEBUG());
-
-		System.out.println(players.get(players.size() - 1).getName() + " wins with "
-				+ players.get(players.size() - 1).getPoints() + " brains.");
+		Collections.sort(players, new SortByPoints2());
+		Player winner = players.get(players.size() - 1);
+		System.out.println(winner.getName() + " wins with " + winner.getPoints() + " brains.");
 	}
 
 	private static boolean getFootprints() {
@@ -54,11 +53,11 @@ public class Game2Player {
 	}
 
 	private static void printReRes() {
-		System.out.println(store.size());
+
 		z.add(0, c.draw());
 		z.add(0, c.draw());
 		z.add(0, c.draw());
-		if (z.get(0) == null) {
+		if ((z.get(0) == null) || (z.get(1) == null) || (z.get(2) == null)) {
 			c.replaceDies(z);
 			z.add(0, c.draw());
 			z.add(0, c.draw());
@@ -81,7 +80,7 @@ public class Game2Player {
 		z.add(0, c.draw());
 		z.add(0, c.draw());
 		z.add(0, c.draw());
-		if (z.get(0) == null) {
+		if ((z.get(0) == null) || (z.get(1) == null) || (z.get(2) == null)) {
 			c.replaceDies(z);
 			z.add(0, c.draw());
 			z.add(0, c.draw());
@@ -147,6 +146,7 @@ public class Game2Player {
 	}
 
 	private static void score() {
+
 		for (int i = 0; i < storage.length; i++) {
 
 			if (storage[i].equalsIgnoreCase("brain")) {
@@ -164,6 +164,8 @@ public class Game2Player {
 			brain.removeAll(brain);
 			fail = true;
 		}
+		System.out.println("Shots fired: " + store.size() + ", Survivors cornered: " + brains);
+
 	}
 
 	private static void setup() {
@@ -189,7 +191,7 @@ public class Game2Player {
 
 	private static void turn() {
 
-		for (int i = 0; i < players.size(); i++) {
+		for (int i = 0; (i < players.size()) && (i != first); i++) {
 			boolean b;
 			boolean b1 = false;
 			boolean b2 = false;
@@ -247,9 +249,10 @@ public class Game2Player {
 
 	private static boolean win() {
 		boolean win = false;
-		for (Player p : players) {
-			win = p.getPoints() >= 13;
+		for (int i = 0; i < players.size(); i++) {
+			win = players.get(i).getPoints() >= 13;
 			if (win && !done) {
+				first = i;
 				done = true;
 				System.out.println("One more turn until it's decided!");
 				break;
