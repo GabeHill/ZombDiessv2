@@ -19,7 +19,6 @@ public class Game2Player {
 	private static int l = 0, brains = 0, first = -1;
 
 	private static void finalScore() {
-
 		Collections.sort(players, new SortByPoints2());
 		Player winner = players.get(players.size() - 1);
 		System.out.println(winner.getName() + " wins with " + winner.getPoints() + " brains.");
@@ -192,7 +191,7 @@ public class Game2Player {
 	private static void turn() {
 
 		for (int i = 0; (i < players.size()) && (i != first); i++) {
-			boolean b;
+			boolean b = players.get(i).getPoints() >= 13;
 			boolean b1 = false;
 			boolean b2 = false;
 			brain.removeAll(brain);
@@ -200,7 +199,6 @@ public class Game2Player {
 			store.removeAll(store);
 			brains = 0;
 			fail = false;
-			b = players.get(i).getPoints() >= 13;
 			if (b) {
 				l++;
 				break;
@@ -210,11 +208,8 @@ public class Game2Player {
 
 				printRes();
 
-				if (store.size() >= 3) {
-					fail = true;
-				} else {
-					fail = false;
-				}
+				fail = store.size() >= 3;
+
 				while (!fail) {
 					b1 = false;
 					b2 = false;
@@ -233,9 +228,11 @@ public class Game2Player {
 						break;
 					}
 				}
+
 				fail = false;
 				players.get(i).addPoints(brains);
 				c.replaceDies(z);
+
 				try {
 					TimeUnit.SECONDS.sleep(1);
 				} catch (InterruptedException e) {
