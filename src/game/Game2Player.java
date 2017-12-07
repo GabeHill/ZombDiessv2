@@ -16,7 +16,7 @@ public class Game2Player {
 	private static ArrayList<Player> players;
 	private static boolean fail = false, done = false;
 	private static ArrayList<ZombDie> z, footprint, brain, store;
-	private static int l = 0, brains = 0, first = -1;
+	private static int brains = 0, first = -1, dieCounter = 13;
 
 	private static void finalScore() {
 		Collections.sort(players, new SortByPoints2());
@@ -56,15 +56,11 @@ public class Game2Player {
 		z.add(0, c.draw());
 		z.add(0, c.draw());
 		z.add(0, c.draw());
-		if ((z.get(0) == null) || (z.get(1) == null) || (z.get(2) == null)) {
-			c.replaceDies(z);
-			z.add(0, c.draw());
-			z.add(0, c.draw());
-			z.add(0, c.draw());
-		}
+		refill();
 		storage = new String[3];
 		for (int i = 0; i < storage.length; i++) {
 			storage[i] = z.get(i).getRoll();
+			dieCounter--;
 			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
 		}
 		System.out.println();
@@ -79,16 +75,12 @@ public class Game2Player {
 		z.add(0, c.draw());
 		z.add(0, c.draw());
 		z.add(0, c.draw());
-		if ((z.get(0) == null) || (z.get(1) == null) || (z.get(2) == null)) {
-			c.replaceDies(z);
-			z.add(0, c.draw());
-			z.add(0, c.draw());
-			z.add(0, c.draw());
-		}
+		refill();
 		storage = new String[3];
 
 		for (int i = 0; i < storage.length; i++) {
 			storage[i] = z.get(i).getRoll();
+			dieCounter--;
 			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
 		}
 		System.out.println();
@@ -96,6 +88,13 @@ public class Game2Player {
 			fail = true;
 		}
 		score();
+	}
+
+	private static void refill() {
+		if (dieCounter <= 2) {
+			c.replaceDies(brain);
+			brain.remove(brains);
+		}
 	}
 
 	private static boolean reroll() {
@@ -109,15 +108,19 @@ public class Game2Player {
 		}
 		while (i < 2) {
 			z.add(i, c.draw());
+			refill();
+			dieCounter--;
 			if (z.get(i) == null) {
 				c.replaceDies(z);
 			} else {
 				storage[i] = z.get(i).getRoll();
+
 				i++;
 			}
 		}
-		for (String s : storage) {
-			System.out.print(s + ", ");
+		for (i = 0; i < storage.length; i++) {
+
+			System.out.print(z.get(i).getColor() + " " + storage[i] + ", ");
 
 		}
 
@@ -133,7 +136,8 @@ public class Game2Player {
 			setup();
 			do {
 				turn();
-				if (win() && (l >= players.size())) {
+				if (win()) {
+					turn();
 					finalScore();
 					play = false;
 				}
@@ -191,6 +195,7 @@ public class Game2Player {
 	private static void turn() {
 
 		for (int i = 0; (i < players.size()) && (i != first); i++) {
+			dieCounter = 13;
 			boolean b = players.get(i).getPoints() >= 13;
 			boolean b1 = false;
 			boolean b2 = false;
@@ -200,10 +205,9 @@ public class Game2Player {
 			brains = 0;
 			fail = false;
 			if (b) {
-				l++;
 				break;
-			} else if ((l < players.size()) && (l < (i + 1))) {
-
+			} else {
+				// if ((l < players.size()) && (l < (i)))
 				System.out.println("\n" + players.get(i).getName() + ": " + players.get(i).getPoints() + " brains.");
 
 				printRes();
@@ -252,10 +256,10 @@ public class Game2Player {
 				first = i;
 				done = true;
 				System.out.println("One more turn until it's decided!");
+
 				break;
 			}
 		}
-
 		return win;
 	}
 }
